@@ -1,18 +1,22 @@
 import jwt from "jsonwebtoken"
 
 export default defineEventHandler(async (event)=>{
-    if(checkPublicUrl(event)) return;
-    const token = getCookie(event, 'auth_token');
-    if(!token){
+    try {
+        if(checkPublicUrl(event)) return;
+        const token = getCookie(event, 'auth_token');
+        if(!token){
         sendRedirect(event, '/login');
-        throw createError({statusCode: 401, statusMessage: "Unauthorized", statusText: "Unauthorized, session may be expired"});
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string)
-    if(!decoded){
+        }
+        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string)
+        if(!decoded){
         sendRedirect(event, '/login');
         throw createError({statusCode: 401, statusMessage: "Unauthorized", statusText: "Unauthorized, wrong session"});
     }
     return;
+    } catch (error) {
+        console.error('JWT verification error:',error);
+    }
+    
 })
 
 function checkPublicUrl(event:any): boolean{

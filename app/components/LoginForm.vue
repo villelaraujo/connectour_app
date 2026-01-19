@@ -63,19 +63,22 @@
     if(useRoute().query.registered === 'true'){
         userRegistered.value = true;
     }
+    if(useRoute().query.error){
+        hasError.value = true;
+        errorMessage.value = 'Invalid credentials.';
+    }
 
     async function submitLogin(){
         try {
-            const response = await $fetch('/api/auth/login', {
-            method: 'POST',
-            body: {
-                email: email.value,
-                password: password.value
-            }
-        });
-        console.log(response);
+            await $fetch('/api/auth/login', {
+                method: 'POST',
+                body: {
+                    email: email.value,
+                    password: password.value
+                }
+            });
         } catch (error) {
-            console.error('Error registering user:', error.response?._data?.message);
+            console.error('Error at login:', error.response?._data?.message);
             hasError.value = true;
             errorMessage.value = error.response?._data?.message;
         }
