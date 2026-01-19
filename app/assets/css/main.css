@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+html{
+    scroll-behavior: smooth;
+}
+body{
+    @apply bg-neutral-950 overflow-x-hidden
+}
+*{
+    font-family: 'Google Sans Flex', sans-serif;
+}
+h1,h2,h3{
+    font-family: 'Google Sans Flex', sans-serif;
+}
+span{
+    font-family: inherit;
+    font-weight: inherit;
+}
+.page-padding{
+    padding: 0 2rem;
+}
+.page-margin{
+    margin: 0 2rem;
+}
+.gradient-bg{
+    background: #006b3d;
+    background: linear-gradient(180deg, rgba(0, 107, 61, 1) 0%, rgba(134, 134, 134, 0) 50%, rgba(128, 128, 128, 0) 100%);
+}
