@@ -76,6 +76,11 @@
                 }
             });
             console.log(response);
+            if(response){
+                navigateTo('/login?registered=true');
+                return;
+            }
+            return;
         } catch (error) {
             console.error('Error registering user:', error.response?._data?.message);
             hasError.value = true;

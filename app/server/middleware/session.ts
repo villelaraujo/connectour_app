@@ -16,12 +16,12 @@ export default defineEventHandler(async (event)=>{
     } catch (error) {
         console.error('JWT verification error:',error);
     }
-    
 })
 
 function checkPublicUrl(event:any): boolean{
-    const publicUrl = ['/api/auth/login', '/api/auth/user', '/login', '/register'];
-    const isPublic = publicUrl.some(url => event.path.startsWith(url));
+    const publicUrl = ['/api/auth/login', '/api/auth/user', '/login', '/account'];
+    const isPublic = publicUrl.some(url => event.path.includes(url));
+    console.log('Is Public:', isPublic);
     if(isPublic) return true;
     return false;
 };

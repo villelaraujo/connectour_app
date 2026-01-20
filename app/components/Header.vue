@@ -6,8 +6,7 @@
                 <h1 class="text-lg md:text-2xl text-gray-200 font-semibold">Connec<span class="text-emerald-400 group-hover:text-emerald-300">tour</span></h1>
             </div>
             <div class="hidden md:flex items-center gap-2 md:gap-4">
-                <LinkTo to="/" label="Home"/>
-                <LinkTo to="/travels" label="Travels"/>
+                <LinkTo to="/" label="Logbook"/>
                 <LinkTo to="/profile" label="Profile"/>
                 <LinkTo to="/connect" label="Connect"/>
             </div>

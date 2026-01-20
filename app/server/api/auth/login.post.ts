@@ -19,8 +19,7 @@ export default defineEventHandler(async (event)=>{
             throw new Error("Invalid credentials");
         }
         const token = jwt.sign({userId: user?.id}, process.env.JWT_SECRET as string,{ expiresIn: '1d'});
-        setCookie(event, 'auth_token', token)
-        sendRedirect(event, '/');
+        setCookie(event, 'auth_token', token);
         return {message: "Successful login"};       
     } catch (error) {
         console.error('Login error:', error);

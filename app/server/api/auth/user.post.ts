@@ -5,7 +5,7 @@ export default defineEventHandler(async (event)=>{
         const body = await readBody(event);
         if(verifyBody(body)){
             const hashedPassword = await genHash(body.password);
-            const user = await prisma.user.create({
+            await prisma.user.create({
                 data:{
                     email:body.email,
                     name:body.username,
@@ -14,8 +14,7 @@ export default defineEventHandler(async (event)=>{
                 }
             });
             console.log('User registered');
-            sendRedirect(event, '/login');
-            return {message: "Successfull user registration"};
+            return {message: "User registered"};
         }
         throw new Error("Invalid user data");
     } catch (error:any) {
