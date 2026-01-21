@@ -20,3 +20,18 @@ model User {
   password String
   salts String
 }
+
+model Logbook{
+  id  Int  @id @default(autoincrement())
+  name String
+}
+
+model Log {
+  id   Int    @id @default(autoincrement())
+  title String
+  city  String
+  country String
+  date   DateTime @default(now())
+  pinned Boolean @default(false)
+  log   String @db.Text
+}
