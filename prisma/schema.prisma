@@ -14,24 +14,28 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String
   password String
-  salts String
+  salts    String
+  logbooks Logbook[]
 }
 
-model Logbook{
-  id  Int  @id @default(autoincrement())
-  name String
+model Logbook {
+  id     Int    @id @default(autoincrement())
+  name   String
+  userId Int
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Log {
-  id   Int    @id @default(autoincrement())
-  title String
-  city  String
+  id      Int      @id @default(autoincrement())
+  title   String
+  city    String
   country String
-  date   DateTime @default(now())
-  pinned Boolean @default(false)
-  log   String @db.Text
+  date    DateTime @default(now())
+  pinned  Boolean  @default(false)
+  log     String   @db.Text
 }

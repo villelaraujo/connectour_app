@@ -1,7 +1,8 @@
 export default defineEventHandler(async (event)=>{
-    const logbooks = await prisma.logbook.findMany({
-        where:{
-            
-        }
-    })
+    try {
+        const logbooks = await prisma.logbook.findMany();
+        return logbooks;        
+    } catch (error) {
+        console.error(error);
+    }
 });

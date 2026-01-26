@@ -23,7 +23,7 @@ export default defineEventHandler(async (event)=>{
         return {message: "Successful login"};       
     } catch (error) {
         console.error('Login error:', error);
-        throw createError({statusCode: 401, statusMessage: "Invalid credentials", statusText: "Invalid credentials"})
+        throw createError({statusCode: 401, statusMessage: "Invalid credentials", statusText: "Invalid credentials"});
     }
 
 });
