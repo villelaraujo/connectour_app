@@ -26,6 +26,7 @@ model Logbook {
   id     Int    @id @default(autoincrement())
   name   String
   userId Int
+  logs Log[]
 
   user User @relation(fields: [userId], references: [id])
 }
@@ -38,4 +39,7 @@ model Log {
   date    DateTime @default(now())
   pinned  Boolean  @default(false)
   log     String   @db.Text
+  logbookId Int
+
+  logbook Logbook @relation(fields: [logbookId], references: [id])
 }

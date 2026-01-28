@@ -7,14 +7,14 @@
         <div v-if="logbooks.length>0">
             <ul class="flex flex-col items-center gap-2">
                 <li :id="logbook.id" class="w-full" v-for="logbook in logbooks">
-                    <button class="cursor-pointer w-full p-2 bg-transparent transition-all duration-150 hover:bg-neutral-800">
+                    <button @click="selectLogbook(logbook.id)" :class="{'text-emerald-500':selectedLogbook.id===logbook.id}" class="cursor-pointer w-full p-2 bg-transparent transition-all duration-150 hover:bg-neutral-800 active:bg-emerald-700">
                         <span>{{logbook.name}}</span>
                     </button>
                 </li>
             </ul>           
         </div>
         <div v-else class="flex justify-center py-4">
-            <p class="text-neutral-700">No LogBooks found</p>
+            <p class="cursor-default select-none text-neutral-700">No LogBooks found</p>
         </div>
         <div v-if="showAddLogbook" class="flex flex-col gap-3 pt-4 items-center justify-center w-full border-t border-neutral-700">
             <input v-model="newLogbookName" placeholder="Name your LogBook" type="text" class="w-full p-2 text-center bg-neutral-700 placeholder:text-neutral-500">
@@ -38,14 +38,21 @@
 
 <script setup>
     const logbooks = ref([]);
+    const selectedLogbook = ref({});
     const newLogbookName = ref('');
     const showAddLogbook = ref(false);
 
-    let userId = inject('providedId');
+    let providedId = inject('providedId');
+
+    const emit = defineEmits(['select-logbook']);
 
     onMounted(async ()=>{
         await fetchLogbooks();
     });
+    watch(selectedLogbook, ()=>{
+        emit('select-logbook',selectedLogbook.value);
+    })
+
     async function addLogbook(){
         try {
             const logbookName = newLogbookName.value;
@@ -53,7 +60,7 @@
                 method:'POST',
                 body:{
                     name:logbookName,
-                    userId:userId
+                    userId:providedId.value
                 },
             });
             if(response?.message === 'success'){
@@ -71,9 +78,21 @@
             const response = await $fetch('/api/logbooks');
             if(response){
                 logbooks.value = response;
+                if(!selectedLogbook.hasOwnProperty('id')){
+                    selectedLogbook.value = logbooks.value[0];
+                    return;
+                }
+                return;
             }
         } catch (error) {
             console.error(error);
         }
+    };
+    function selectLogbook(id){
+        logbooks.value.forEach(elm => {
+            if(id===elm.id){
+                selectedLogbook.value=elm;
+            }
+        });
     };
 </script>
