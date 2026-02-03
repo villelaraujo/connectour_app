@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export default defineEventHandler(async (event)=>{
     try {
-        const params = getQuery(event);
-        console.log('logbook route params:', params);
+        const body:any|undefined = await readBody(event);
         const token = getCookie(event,'auth_token');
         if(!token){
             throw new Error('Unauthorized');
@@ -12,15 +11,16 @@ export default defineEventHandler(async (event)=>{
         if(!decoded){
             throw new Error('Unauthorized');
         }
-        if(params.logbook){
-            const logs = await prisma.log.findMany({
+        if(body.logId){
+            await prisma.log.delete({
                 where:{
-                    logbookId:parseInt(params.logbook.toString())
+                    logbookId:parseInt(body.logbookId),
+                    id:parseInt(body.logId),
                 }
             })
-            return logs;
+            return {message:'success'};
         }
-        throw new Error('Error fetching Logs');
+        throw new Error('Error deleting Log',body);
     } catch (error) {
         console.error(error);
     }

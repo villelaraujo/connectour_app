@@ -8,7 +8,12 @@
             <ul class="flex flex-col items-center gap-2">
                 <li :id="logbook.id" class="w-full" v-for="logbook in logbooks">
                     <button @click="selectLogbook(logbook.id)" :class="{'text-emerald-500':selectedLogbook.id===logbook.id}" class="cursor-pointer w-full p-2 bg-transparent transition-all duration-150 hover:bg-neutral-800 active:bg-emerald-700">
-                        <span>{{logbook.name}}</span>
+                        <div class="flex items-center justify-between">
+                            <span>{{logbook.name}}</span>
+                            <button @click="deleteLogbook(logbook.id)" class="group cursor-pointer flex items-center justify-center p-2">
+                                <svg class="transition-colors duration-150 group-hover:fill-red-700" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                            </button>
+                        </div>
                     </button>
                 </li>
             </ul>           
@@ -38,20 +43,21 @@
 
 <script setup>
     const logbooks = ref([]);
-    const selectedLogbook = ref({});
+    const selectedLogbook = ref(null);
     const newLogbookName = ref('');
     const showAddLogbook = ref(false);
 
     let providedId = inject('providedId');
 
-    const emit = defineEmits(['select-logbook']);
+    const router = useRouter();
 
     onMounted(async ()=>{
         await fetchLogbooks();
     });
-    watch(selectedLogbook, ()=>{
-        emit('select-logbook',selectedLogbook.value);
-    })
+
+    watch(selectedLogbook, (newLogbook)=>{
+        router.replace({query:{logbook:newLogbook?.id}});
+    });
 
     async function addLogbook(){
         try {
@@ -78,7 +84,7 @@
             const response = await $fetch('/api/logbooks');
             if(response){
                 logbooks.value = response;
-                if(!selectedLogbook.hasOwnProperty('id')){
+                if(selectedLogbook.value===null){
                     selectedLogbook.value = logbooks.value[0];
                     return;
                 }
@@ -91,8 +97,25 @@
     function selectLogbook(id){
         logbooks.value.forEach(elm => {
             if(id===elm.id){
-                selectedLogbook.value=elm;
+                selectedLogbook.value = elm;
             }
         });
+    };
+    async function deleteLogbook(id){
+        try {
+            const response = await $fetch('/api/logbooks',{
+            method:'DELETE',
+            body:{
+                logbookId:id
+            }
+        });
+        if(response?.message==='success'){
+            selectedLogbook.value = null;
+            await fetchLogbooks();
+            return;
+        }            
+        } catch (error) {
+            console.error(error);
+        }
     };
 </script>

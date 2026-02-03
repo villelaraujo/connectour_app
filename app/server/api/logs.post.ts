@@ -14,7 +14,7 @@ export default defineEventHandler(async (event)=>{
         if(validateLog(body)){
             const logs = await prisma.log.create({
                 data:{
-                    logbookId:body.logbookId,
+                    logbookId:parseInt(body.logbookId),
                     title:body.title,
                     city:body.city,
                     country:body.country,
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event)=>{
             })
             return {message:'success'};
         }
-        throw new Error('Error creating Log');
+        throw new Error('Error creating Log',body);
     } catch (error) {
         console.error(error);
     }
