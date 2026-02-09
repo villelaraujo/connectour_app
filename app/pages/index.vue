@@ -33,11 +33,13 @@
 </template>
 
 <script setup>
+    useHead({
+        title: 'Connectour',
+    });
     const route = useRoute();
 
     const username = ref('Guest');
     const providedId = ref(null);
-    //const logbookId = ref(()=>route.query.logbook);
     const logs = ref([]);
     const createLogMode = ref(false);
 
@@ -95,7 +97,6 @@
         } catch (error) {
             console.error(error);
         }
-
     };
     async function onDeleteLog(deletedLogId){
         try {

@@ -17,12 +17,12 @@
                 <p class="text-neutral-500">{{ props.date }}</p>
             </div>
         </div>
-        <div class="flex flex-col gap-3 items-center justify-center w-full min-h-48 p-2 bg-neutral-700">
+        <div class="flex flex-col gap-3 items-center justify-center w-full p-2 bg-neutral-700">
             <div class="flex p-2 w-full h-full bg-neutral-800">
-                <p class="text-neutral-300">{{ props.title }}</p>
+                <p class="text-neutral-300 wrap-anywhere">{{ props.title }}</p>
             </div>
             <div class="flex p-2 w-full min-h-32 bg-neutral-800">
-                <p class="text-neutral-400">{{ props.log }}</p>
+                <p class="text-neutral-400 wrap-anywhere">{{ props.log }}</p>
             </div>
         </div>
     </div>

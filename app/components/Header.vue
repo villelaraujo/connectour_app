@@ -6,12 +6,12 @@
                 <h1 class="text-lg md:text-2xl text-gray-200 font-semibold">Connec<span class="text-emerald-400 group-hover:text-emerald-300">tour</span></h1>
             </div>
             <div class="hidden md:flex items-center gap-2 md:gap-4">
-                <LinkTo to="/" label="Logbook"/>
+                <a href="/" class="cursor-pointer text-sm text-emerald-400 transition-colors duration-150 hover:text-white">Logbook</a>
                 <LinkTo to="/profile" label="Profile"/>
                 <LinkTo to="/connect" label="Connect"/>
             </div>
             <div class="hidden md:flex items-center">
-                <LinkTo to="/logout" label="Logout"/>
+                <button @click="logout" class="cursor-pointer text-sm text-emerald-400 transition-colors duration-150 hover:text-white">Logout</button>
             </div>
             <div class="cursor-pointer flex md:hidden items-center p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
@@ -19,6 +19,20 @@
         </div>
     </div>
 </template>
+
+<script setup>
+    async function logout(){
+        try {
+            const response = await $fetch('/api/logout');
+            if(response?.message==='success'){
+                navigateTo('/login');
+                return;
+            }            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+</script>
 
 <style scoped>
     svg{
