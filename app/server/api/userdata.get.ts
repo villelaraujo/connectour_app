@@ -11,7 +11,7 @@ export default defineEventHandler(async (event)=>{
             const userdata = await prisma.user.findUnique({
                 where:{id:decoded.userId},
             });
-            return {username:userdata?.name, id:userdata?.id};
+            return {username:userdata?.name, id:userdata?.id, email:userdata?.email};
         }
         throw new Error('Token unavaliable');
     } catch (error) {
