@@ -68,7 +68,6 @@
     };
     async function updateLogs() {
         if(!route.query.logbook) return;
-        console.log('updateLogs:',route.query.logbook);
         const response = await $fetch('/api/logs',{query:{logbook:route.query.logbook}});
         if(response){
             logs.value = response;

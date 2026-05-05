@@ -13,14 +13,28 @@
             <div class="hidden md:flex items-center">
                 <button @click="logout" class="cursor-pointer text-sm text-emerald-400 transition-colors duration-150 hover:text-white">Logout</button>
             </div>
-            <div class="cursor-pointer flex md:hidden items-center p-2">
+            <button @click="menuOpen=!menuOpen" class="cursor-pointer flex md:hidden items-center p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </button>
+        </div>
+    </div>
+    <div :class="menuOpen?'h-[80vh] py-8 border-b':'h-0 py-0'" class="flex flex-col items-center w-screen overflow-hidden bg-blend-color border-emerald-500 shadow-lg z-40 transition-normal duration-300">
+        <div class="flex flex-col justify-between h-full items-center max-w-300 w-full page-padding text-3xl">
+            <div class="flex flex-col items-center gap-8">
+                <a href="/" class="cursor-pointer text-emerald-400 transition-colors duration-150 hover:text-white">Logbook</a>
+                <nuxt-link to="/profile" class="text-emerald-400 transition-colors duration-150 hover:text-white">Profile</nuxt-link>
+                <nuxt-link to="/connect" class="text-emerald-400 transition-colors duration-150 hover:text-white">Connect</nuxt-link>
+            </div>
+            <div class="flex items-center">
+                <button @click="logout" class="cursor-pointer text-emerald-400 transition-colors duration-150 hover:text-white">Logout</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+    const menuOpen = ref(false);
+
     async function logout(){
         try {
             const response = await $fetch('/api/logout');
