@@ -22,8 +22,8 @@
         <div class="flex flex-col justify-between h-full items-center max-w-300 w-full page-padding text-3xl">
             <div class="flex flex-col items-center gap-8">
                 <a href="/" class="cursor-pointer text-emerald-400 transition-colors duration-150 hover:text-white">Logbook</a>
-                <nuxt-link to="/profile" class="text-emerald-400 transition-colors duration-150 hover:text-white">Profile</nuxt-link>
-                <nuxt-link to="/connect" class="text-emerald-400 transition-colors duration-150 hover:text-white">Connect</nuxt-link>
+                <nuxt-link @click="menuOpen=!menuOpen" to="/profile" class="text-emerald-400 transition-colors duration-150 hover:text-white">Profile</nuxt-link>
+                <nuxt-link @click="menuOpen=!menuOpen" to="/connect" class="text-emerald-400 transition-colors duration-150 hover:text-white">Connect</nuxt-link>
             </div>
             <div class="flex items-center">
                 <button @click="logout" class="cursor-pointer text-emerald-400 transition-colors duration-150 hover:text-white">Logout</button>
