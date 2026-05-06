@@ -1,18 +1,17 @@
 <template>
-    <SectionWrapper id="error">
-        <div class="w-screen overflow-hidden h-screen">
-            <div class="flex items-center justify-center">
-                <h1 class="text-5xl">An Error Occurred</h1>
-                <button @click="handleError" class="text-sm text-emerald-400 transition-colors duration-150 hover:text-white"></button>
+    <NuxtLayout name="pre-auth">
+        <SectionWrapper id="error">
+        <div class="flex items-center justify-center w-full overflow-hidden h-screen">
+            <div class="flex flex-col gap-6 items-center">
+                <h1 class="text-3xl">An Error Occurred</h1>
+                <button @click="handleError" class="cursor-pointer text-sm text-emerald-400 transition-colors duration-150 hover:text-white">Back to Home</button>
             </div>
         </div>
-    </SectionWrapper>
+        </SectionWrapper>
+    </NuxtLayout>
 </template>
 
 <script setup>
-    definePageMeta({
-        layout: 'pre-auth',
-    })
     useHead({
         title: 'Error'
     })
