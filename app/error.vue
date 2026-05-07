@@ -17,6 +17,6 @@
     })
 
     function handleError(){
-        clearError({redirect: '/login'});
+        clearError({redirect: '/'});
     }
 </script>

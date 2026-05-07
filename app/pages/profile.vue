@@ -1,5 +1,25 @@
 <template> 
     <SectionWrapper id="home">
+        <div v-if="deleteMode" class="fixed top-0 left-0 z-50 h-screen w-screen flex items-center justify-center bg-transparent backdrop-blur-sm">
+            <div class="flex flex-col gap-8 px-4 py-6 mx-6 max-w-125 border border-emerald-500 opacity-100 bg-neutral-950 shadow-lg hover:shadow-emerald-700 text-white transition-shadow duration-500">
+                <div class="flex justify-center">
+                    <h1 class="text-2xl">Account Termination</h1>
+                </div>
+                <div>
+                    <p class="text-sm text-white">This action is irreversible, all your account data will be permanently <span class="text-red-500">deleted</span></p>
+                </div>
+                <div class="flex items-center justify-center gap-4">
+                    <p>Confirm Password:</p>
+                    <input v-model="password" class="peer px-4 py-2 text-white border border-neutral-500 focus:outline-none focus:border-emerald-500" type="password" required>
+                </div>
+                <div>
+                    <div class="flex items-center justify-around">
+                        <button @click="deleteMode=false" class="cursor-pointer flex gap-3 items-center justify-center py-2 px-6 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">Close</button>
+                        <button class="cursor-pointer flex gap-3 items-center justify-center py-2 px-6 text-red-700 bg-red-950 border border-red-700 transition-all duration-150 hover:border-red-400 hover:text-red-400">DELETE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="flex flex-col gap-3 w-full">
             <div class="flex flex-col gap-6 items-center justify-center border px-2 py-12 sm:px-4 border-neutral-700">
                 <div class="flex items-center justify-center h-36 w-36 mt-4 border border-neutral-700 bg-neutral-900 rounded-full">
@@ -38,7 +58,7 @@
                         <div class="flex gap-2 items-center">
                             <h2 class="cursor-pointer transition-colors duration-150 hover:text-emerald-500">Change account password</h2>
                             <div class="h-4 w-px bg-neutral-700"></div>
-                            <h2 class="cursor-pointer transition-colors duration-150 hover:text-red-800">Delete this Account</h2>
+                            <button @click="deleteMode=true" class="cursor-pointer transition-colors duration-150 hover:text-red-800">Delete this Account</button>
                         </div>
                     </div>
                 </div>
@@ -53,6 +73,8 @@
     const editNameMode = ref(false);
     const inputField = ref(null);
     const newName = ref('');
+    const password = ref('');
+    const deleteMode = ref(false);
 
     onMounted(async()=>{
         await fetchUserdata();
@@ -97,4 +119,12 @@
             console.error(error);
         }
     };
+    async function deleteAccount(){
+        if(!password.value) return;
+        try {
+            response = await $fetch('',{method:'DELETE', body:{password:password.value}});
+        } catch (error) {
+            
+        }
+    }
 </script>
