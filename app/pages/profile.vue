@@ -15,7 +15,7 @@
                 <div>
                     <div class="flex items-center justify-around">
                         <button @click="deleteMode=false" class="cursor-pointer flex gap-3 items-center justify-center py-2 px-6 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">Close</button>
-                        <button class="cursor-pointer flex gap-3 items-center justify-center py-2 px-6 text-red-700 bg-red-950 border border-red-700 transition-all duration-150 hover:border-red-400 hover:text-red-400">DELETE</button>
+                        <button @click="deleteAccount" class="cursor-pointer flex gap-3 items-center justify-center py-2 px-6 text-red-700 bg-red-950 border border-red-700 transition-all duration-150 hover:border-red-400 hover:text-red-400">DELETE</button>
                     </div>
                 </div>
             </div>
@@ -122,9 +122,13 @@
     async function deleteAccount(){
         if(!password.value) return;
         try {
-            response = await $fetch('',{method:'DELETE', body:{password:password.value}});
+            const response = await $fetch('/api/auth/user',{method:'DELETE', body:{email:userEmail.value,password:password.value}});
+            if(response?.success){
+                navigateTo('/login');
+            }
+            console.error(response.message);
         } catch (error) {
-            
+            console.error(error);
         }
     }
 </script>
