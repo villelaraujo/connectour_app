@@ -28,7 +28,7 @@ model Logbook {
   userId Int
   logs Log[]
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Log {
@@ -41,5 +41,5 @@ model Log {
   log     String   @db.Text
   logbookId Int
 
-  logbook Logbook @relation(fields: [logbookId], references: [id])
+  logbook Logbook @relation(fields: [logbookId], references: [id], onDelete: Cascade)
 }
