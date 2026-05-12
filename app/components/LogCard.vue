@@ -7,7 +7,7 @@
             </div>
             <div class="flex flex-col gap-2 p-4">
                 <div class="flex gap-2 items-center self-end">
-                    <button class="cursor-pointer p-2 transition-colors duration-150 hover:bg-emerald-600">
+                    <button @click="togglePin" class="cursor-pointer p-2 transition-colors duration-150 hover:bg-emerald-600">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z"/></svg>
                     </button>
                     <button @click="deleteLog" class="cursor-pointer p-2 transition-colors duration-150 hover:bg-red-900">
@@ -38,12 +38,17 @@
         date:{type:String, required:true},
         pinned: {type:Boolean, required:true},
     })
-    const emit = defineEmits(['delete-log']);
+    const emit = defineEmits(['delete-log', 'toggle-pin']);
 
     function deleteLog(){
         emit('delete-log', props.id);
         return;
     };
+    function togglePin(){
+        props.pinned = !props.pinned;
+        emit('toggle-pin', props.id, props.pinned);
+        return;
+    }
 </script>
 
 <style scoped>

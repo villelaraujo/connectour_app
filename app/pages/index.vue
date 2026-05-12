@@ -18,14 +18,23 @@
             <CreateLog @add-log="onAddLog" v-if="createLogMode" :logbook-id="$route.query.logbook"/>
             <div class="flex flex-col gap-3 md:flex-row">
                 <SideMenu />
-                <div v-if="logs.length>0" class="flex-2 flex flex-col gap-4">
-                    <div v-for="log in logs">
-                        <LogCard @delete-log="onDeleteLog" :id="log.id" :log="log.log"
-                        :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                <div class="flex flex-2 flex-col gap-4">
+                    <div v-if="pinnedLogs.length>0" class="flex-2 flex flex-col gap-4">
+                        <div v-for="log in pinnedLogs">
+                            <LogCard @delete-log="onDeleteLog" :id="log.id" :log="log.log"
+                            :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                        </div>
+                        <div class="w-full h-px bg-neutral-700"></div>
                     </div>
-                </div>
-                <div v-else class="flex flex-2 items-center justify-center min-h-32">
-                    <p class="cursor-default select-none text-neutral-600">This LogBook is empty</p>
+                    <div v-if="logs.length>0" class="flex flex-col gap-4">
+                        <div v-for="log in logs">
+                            <LogCard @delete-log="onDeleteLog" :id="log.id" :log="log.log"
+                            :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                        </div>
+                    </div>
+                    <div v-else class="flex flex-2 items-center justify-center min-h-32">
+                        <p class="cursor-default select-none text-neutral-600">This LogBook is empty</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,6 +50,7 @@
     const username = ref('Guest');
     const providedId = ref(null);
     const logs = ref([]);
+    const pinnedLogs = computed(()=>logs.value.filter(log=>log.pinned));
     const createLogMode = ref(false);
 
     watch(()=>route.query.logbook, async(newId)=>{
@@ -104,6 +114,25 @@
                 body:{
                     logbookId:route.query.logbook,
                     logId:deletedLogId,
+                }
+            });
+            if(response?.message==='success'){
+                await updateLogs();
+                return;
+            }            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    async function onTogglePin(logId,isPinned){
+        try {
+            const response = await $fetch('/api/logs',{
+                method:'PUT',
+                body:{
+                    logbookId:route.query.logbook,
+                    logId:logId,
+                    pinned: isPinned,
+                    edit: false,
                 }
             });
             if(response?.message==='success'){
