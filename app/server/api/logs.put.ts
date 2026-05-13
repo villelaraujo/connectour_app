@@ -16,7 +16,6 @@ export default defineEventHandler(async (event)=>{
             return {success:true, message: 'edit log endpoint reached'};
             //implement edit log func
         }
-        console.log(body);
         await prisma.log.update({
             where:{logbookId: parseInt(body?.logbookId), id: parseInt(body?.logId)},
             data:{pinned: body?.pinned}
