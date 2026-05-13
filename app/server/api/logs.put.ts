@@ -16,12 +16,12 @@ export default defineEventHandler(async (event)=>{
             return {success:true, message: 'edit log endpoint reached'};
             //implement edit log func
         }
-
-        prisma.log.update({
-            where:{logbookId: body?.logbookId, id: parseInt(body?.logId)},
+        console.log(body);
+        await prisma.log.update({
+            where:{logbookId: parseInt(body?.logbookId), id: parseInt(body?.logId)},
             data:{pinned: body?.pinned}
         });
-        throw new Error('Error updating Log',body);
+        return {success:true, message: 'Log Updated'};
     } catch (error) {
         console.error(error);
     }

@@ -21,14 +21,14 @@
                 <div class="flex flex-2 flex-col gap-4">
                     <div v-if="pinnedLogs.length>0" class="flex-2 flex flex-col gap-4">
                         <div v-for="log in pinnedLogs">
-                            <LogCard @delete-log="onDeleteLog" :id="log.id" :log="log.log"
+                            <LogCard @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :id="log.id" :log="log.log"
                             :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
                         </div>
                         <div class="w-full h-px bg-neutral-700"></div>
                     </div>
                     <div v-if="logs.length>0" class="flex flex-col gap-4">
                         <div v-for="log in logs">
-                            <LogCard @delete-log="onDeleteLog" :id="log.id" :log="log.log"
+                            <LogCard @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :id="log.id" :log="log.log"
                             :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
                         </div>
                     </div>
@@ -126,6 +126,7 @@
     };
     async function onTogglePin(logId,isPinned){
         try {
+            isPinned = !isPinned;
             const response = await $fetch('/api/logs',{
                 method:'PUT',
                 body:{
@@ -135,7 +136,7 @@
                     edit: false,
                 }
             });
-            if(response?.message==='success'){
+            if(response?.success){
                 await updateLogs();
                 return;
             }            
