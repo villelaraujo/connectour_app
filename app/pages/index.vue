@@ -21,14 +21,14 @@
                 <div class="flex flex-2 flex-col gap-4">
                     <div v-if="pinnedLogs.length>0" class="flex-2 flex flex-col gap-4">
                         <div v-for="log in pinnedLogs">
-                            <LogCard @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
+                            <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
                             :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
                         </div>
                         <div class="w-full h-px bg-neutral-700 my-8"></div>
                     </div>
                     <div v-if="logs.length>0" class="flex flex-col gap-4">
                         <div v-for="log in logs">
-                            <LogCard @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
+                            <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
                             :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
                         </div>
                     </div>

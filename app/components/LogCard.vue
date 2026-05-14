@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-2 p-4">
                 <div class="flex gap-2 items-center self-end">
                     <div v-if="editMode" class="flex gap-2 items-center">
-                        <button @click="editMode=false" class="group cursor-pointer flex items-center justify-center p-2 bg-neutral-700 transition-colors duration-150 hover:bg-red-900">
+                        <button @click="editMode=false;editedMessage=props.log" class="group cursor-pointer flex items-center justify-center p-2 bg-neutral-700 transition-colors duration-150 hover:bg-red-900">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>                        
                         </button>
                         <button @click="applyEdit" class="group cursor-pointer flex items-center justify-center p-2 bg-neutral-700 transition-colors duration-150 hover:bg-emerald-600">
