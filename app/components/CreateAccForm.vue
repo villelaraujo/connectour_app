@@ -44,7 +44,8 @@
                             </div>
                         </div>
                         <button type="submit" class="group cursor-pointer py-2 px-4 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">
-                            <span class="transition-colors duration-150 group-hover:text-emerald-500">Register</span>
+                            <span v-if="loadingRegisterBtn" class="loader"></span>
+                            <span v-else class="transition-colors duration-150 group-hover:text-emerald-500">Register</span>
                         </button>
                         <div class="flex flex-col gap-4 items-center">
                             <p class="opacity-70">Already have an account?</p>
@@ -66,7 +67,10 @@
     const errorMessage = ref('');
     const hasError = ref(false);
 
+    const loadingRegisterBtn = ref(false);
+
     async function submitRegister(){
+        loadingRegisterBtn.value = true;
         if(!email.value.includes('@')){
         hasError.value = true;
         errorMessage.value = 'Please enter a valid email address.';
@@ -98,11 +102,13 @@
                 navigateTo('/login?registered=true');
                 return;
             }
+            loadingRegisterBtn.value = false;
             return;
         } catch (error) {
             console.error('Error registering user:', error.response?._data?.message);
             hasError.value = true;
             errorMessage.value = error.response?._data?.message;
+            loadingRegisterBtn.value = false;
         }
     };
 </script>

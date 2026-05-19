@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-    const username = ref('Guest');
+    const username = ref('');
     const userEmail = ref('');
     const editNameMode = ref(false);
     const inputField = ref(null);

@@ -32,7 +32,8 @@
                             </div>
                         </div>
                         <button type="submit" class="group cursor-pointer py-2 px-4 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">
-                            <span class="transition-colors duration-150 group-hover:text-emerald-500">Login</span>
+                            <span v-if="loadingLoginBtn" class="loader"></span>
+                            <span v-else class="transition-colors duration-150 group-hover:text-emerald-500">Login</span>
                         </button>
                         <!--
                         <div class="flex flex-col gap-6 items-center">
@@ -70,6 +71,8 @@
     const hasError = ref(false);
     const userRegistered = ref(false);
 
+    const loadingLoginBtn = ref(false);
+
     if(useRoute().query.registered === 'true'){
         userRegistered.value = true;
     }
@@ -79,6 +82,7 @@
     }
 
     async function submitLogin(){
+        loadingLoginBtn.value = true;
         try {
             const response = await $fetch('/api/auth/login', {
                 method: 'POST',
@@ -91,11 +95,13 @@
                 navigateTo('/');
                 return;
             }
+            loadingLoginBtn.value = false;
             return;
         } catch (error) {
             console.error('Error at login:', error.response?._data?.message);
             hasError.value = true;
             errorMessage.value = error.response?._data?.message;
+            loadingLoginBtn.value = false;
         }
     };
 </script>
