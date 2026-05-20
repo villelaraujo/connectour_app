@@ -7,7 +7,7 @@ export default defineEventHandler(async (event)=>{
         if(!token){
         sendRedirect(event, '/login');
         }
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string)
+        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
         if(!decoded){
         sendRedirect(event, '/login');
         throw createError({statusCode: 401, statusMessage: "Unauthorized", statusText: "Unauthorized, wrong session"});
