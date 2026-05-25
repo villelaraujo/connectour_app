@@ -58,6 +58,8 @@
 </template>
 
 <script setup>
+import { authClient } from '~/composables/authClient';
+
     const email = ref('');
     const username = ref('');
     const password = ref('');
@@ -89,14 +91,22 @@
         }
 
         try {
-            const response = await $fetch('/api/auth/user', {
-                method: 'POST',
-                body: {
-                    email: email.value,
-                    username: username.value,
-                    password: password.value
+            const {data, error} = authClient.signUp.email(
+                {
+                    email:email,
+                    password:password,
+                    name:username,
+                },
+                {
+                    onRequest:(ctx)=>{loadingRegisterBtn.value = true;}
+                },
+                {
+                    onSuccess:(ctx)=>{navigateTo("/login");}
+                },
+                {
+                    onError:(ctx)=>{throw new Error(ctx.error.message || 'Error registering user');}
                 }
-            });
+            );
             console.log(response);
             if(response){
                 navigateTo('/login?registered=true');
