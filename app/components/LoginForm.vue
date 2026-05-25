@@ -35,7 +35,6 @@
                             <span v-if="loadingLoginBtn" class="loader"></span>
                             <span v-else class="transition-colors duration-150 group-hover:text-emerald-500">Login</span>
                         </button>
-                        <!--
                         <div class="flex flex-col gap-6 items-center">
                             <div class="h-px w-full bg-neutral-700"></div>
                             <div class="flex flex-col gap-4 w-full">
@@ -52,7 +51,6 @@
                             </div>
                             <div class="h-px w-full bg-neutral-700"></div>
                         </div>                        
-                        -->
                         <div class="flex flex-col gap-4 items-center">
                             <p class="opacity-70">Don't have an account?</p>
                             <NuxtLink to="/account" class="cursor-pointer text-white transition-colors duration-150 hover:text-emerald-500">Register new Account</NuxtLink>

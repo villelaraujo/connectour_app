@@ -91,7 +91,7 @@ import { authClient } from '~/composables/authClient';
         }
 
         try {
-            const {data, error} = authClient.signUp.email(
+            const {data, error} = await authClient.signUp.email(
                 {
                     email:email,
                     password:password,
@@ -101,18 +101,12 @@ import { authClient } from '~/composables/authClient';
                     onRequest:(ctx)=>{loadingRegisterBtn.value = true;}
                 },
                 {
-                    onSuccess:(ctx)=>{navigateTo("/login");}
+                    onSuccess:(ctx)=>{navigateTo("/login?registered=true");}
                 },
                 {
-                    onError:(ctx)=>{throw new Error(ctx.error.message || 'Error registering user');}
+                    onError:(ctx)=>{loadingRegisterBtn.value = false; throw new Error(ctx.error.message || 'Error registering user');}
                 }
             );
-            console.log(response);
-            if(response){
-                navigateTo('/login?registered=true');
-                return;
-            }
-            loadingRegisterBtn.value = false;
             return;
         } catch (error) {
             console.error('Error registering user:', error.response?._data?.message);
