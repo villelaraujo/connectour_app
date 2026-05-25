@@ -36,6 +36,7 @@ model Logbook {
   logs   Log[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("logbook")
 }
 
 model Log {
@@ -49,6 +50,7 @@ model Log {
   logbookId Int
 
   logbook Logbook @relation(fields: [logbookId], references: [id], onDelete: Cascade)
+  @@map("log")
 }
 
 model Session {
