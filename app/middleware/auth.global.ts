@@ -1,3 +1,5 @@
+import { authClient } from "~/lib/authClient";
+
 export default defineNuxtRouteMiddleware(async (to)=>{
     if(checkPublicUrl(to)) return;
     const {data: session} = await authClient.useSession(useFetch);

@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { authClient } from '~/composables/authClient';
+    import { authClient } from '~/lib/authClient';
 
     const email = ref('');
     const username = ref('');
@@ -93,23 +93,22 @@ import { authClient } from '~/composables/authClient';
         try {
             const {data, error} = await authClient.signUp.email(
                 {
-                    email:email,
-                    password:password,
-                    name:username,
+                    email:email.value,
+                    password:password.value,
+                    name:username.value,
                 },
                 {
                     onRequest:(ctx)=>{loadingRegisterBtn.value = true;}
                 },
                 {
-                    onSuccess:(ctx)=>{navigateTo("/login?registered=true");}
+                    onSuccess: async (ctx)=>{await navigateTo("/login?registered=true");}
                 },
                 {
-                    onError:(ctx)=>{loadingRegisterBtn.value = false; throw new Error(ctx.error.message || 'Error registering user');}
+                    onError:(ctx)=>{loadingRegisterBtn.value = false; throw new Error(error);}
                 }
             );
-            return;
         } catch (error) {
-            console.error('Error registering user:', error.response?._data?.message);
+            console.error('Error registering user:', error);
             hasError.value = true;
             errorMessage.value = error.response?._data?.message;
             loadingRegisterBtn.value = false;
