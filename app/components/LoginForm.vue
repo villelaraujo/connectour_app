@@ -31,6 +31,10 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="flex gap-3 w-[60vw] max-w-100">
+                            <input id="remember" type="checkbox" class="w-6 h-6 rounded-none accent-emerald-500 border border-neutral-500">
+                            <label for="remember">Remember me</label>
+                        </div>
                         <button type="submit" class="group cursor-pointer py-2 px-4 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">
                             <span v-if="loadingLoginBtn" class="loader"></span>
                             <span v-else class="transition-colors duration-150 group-hover:text-emerald-500">Login</span>
