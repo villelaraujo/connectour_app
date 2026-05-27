@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="flex gap-3 w-[60vw] max-w-100">
-                            <input id="remember" type="checkbox" class="w-6 h-6 rounded-none accent-emerald-500 border border-neutral-500">
+                            <input @click="rememberMe=!rememberMe" id="remember" type="checkbox" class="w-6 h-6 rounded-none accent-emerald-500 border border-neutral-500">
                             <label for="remember">Remember me</label>
                         </div>
                         <button type="submit" class="group cursor-pointer py-2 px-4 border border-neutral-700 transition-colors duration-150 hover:border-emerald-500">
@@ -66,8 +66,11 @@
 </template>
 
 <script setup>
+    import { authClient } from '~/lib/authClient';
+
     const email = ref('');
     const password = ref('');
+    const rememberMe = ref(false);
     const showPassword = ref(false);
     const errorMessage = ref('');
     const hasError = ref(false);
@@ -86,21 +89,24 @@
     async function submitLogin(){
         loadingLoginBtn.value = true;
         try {
-            const response = await $fetch('/api/auth/login', {
-                method: 'POST',
-                body: {
-                    email: email.value,
-                    password: password.value
+            const {data, error} = await authClient.signIn.email({
+                email: email.value,
+                password: password.value,
+                rememberMe: rememberMe.value,
+            },
+            {
+                onRequest:(ctx)=>{loadingLoginBtn.value = true;}
+            },
+            {
+                onSuccess:async(ctx)=>{await navigateTo('/');},
+            },{
+                onError:(ctx)=>{
+                    throw new Error(error);
                 }
-            });
-            if(response?.message === "Successful login"){
-                navigateTo('/');
-                return;
             }
-            loadingLoginBtn.value = false;
-            return;
+            );
         } catch (error) {
-            console.error('Error at login:', error.response?._data?.message);
+            console.error('Error at login:', error?.message);
             hasError.value = true;
             errorMessage.value = error.response?._data?.message;
             loadingLoginBtn.value = false;

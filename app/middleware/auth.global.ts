@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(async (to)=>{
     if(checkPublicUrl(to)) return;
     const {data: session} = await authClient.useSession(useFetch);
     if(!session.value) {
-        return navigateTo('/login');
+        return navigateTo({path:'/login'});
     }
 });
 
