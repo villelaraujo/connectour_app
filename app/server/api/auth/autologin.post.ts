@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 export default defineEventHandler(async (event)=>{
     try {
         const token = getCookie(event, 'auth_token');
+        console.log('autologin api endpoint');
         if(!token) return;
         const decoded:any = jwt.verify(token as string, process.env.JWT_SECRET as string);
         if(!decoded) return;

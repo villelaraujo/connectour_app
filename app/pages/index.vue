@@ -1,4 +1,5 @@
 <template> 
+    <ClientOnly>
     <SectionWrapper id="home">
         <div class="flex flex-col gap-3 w-full">
             <div v-if="createLogMode" class="flex items-center justify-center border p-2 sm:p-4 border-neutral-700">
@@ -39,9 +40,12 @@
             </div>
         </div>
     </SectionWrapper>
+    </ClientOnly>
 </template>
 
 <script setup>
+    import { authClient } from '~/lib/authClient';
+
     useHead({
         title: 'Connectour',
     });
@@ -52,6 +56,8 @@
     const logs = ref([]);
     const pinnedLogs = computed(()=>logs.value.filter(log=>log.pinned));
     const createLogMode = ref(false);
+
+    const {data: session} = await authClient.useSession(useFetch);
 
     watch(()=>route.query.logbook, async(newId)=>{
         console.log('logbookId changed', newId);

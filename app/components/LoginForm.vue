@@ -68,6 +68,8 @@
 <script setup>
     import { authClient } from '~/lib/authClient';
 
+    const {data: session, isPending, error: sessionError} = authClient.useSession(useFetch);
+
     const email = ref('');
     const password = ref('');
     const rememberMe = ref(false);
@@ -93,12 +95,13 @@
                 email: email.value,
                 password: password.value,
                 rememberMe: rememberMe.value,
+                callbackURL: '/',
             },
             {
                 onRequest:(ctx)=>{loadingLoginBtn.value = true;}
             },
             {
-                onSuccess:async(ctx)=>{await navigateTo('/');},
+                onSuccess:async(ctx)=>{console.log('login successful')},
             },{
                 onError:(ctx)=>{
                     throw new Error(error);

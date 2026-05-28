@@ -1,20 +1,21 @@
-import jwt from 'jsonwebtoken';
+import {auth} from "../utils/auth";
 
 export default defineEventHandler(async (event)=>{
     try {
-        const token = getCookie(event,'auth_token');
-        if(!token){
-            throw createError({statusCode: 401, statusMessage: "Unauthorized", statusText: "Unauthorized"});
+        if(checkPublicUrl(event)) return;
+        const session = await auth.api.getSession({headers: event.headers});
+        if(!session?.user){
+            throw createError({statusCode:401, message:"Unauthorized"});
         }
-        const decoded:any|undefined = jwt.verify(token as string, process.env.JWT_SECRET as string);
-        if(decoded.userId){
-            const userdata = await prisma.user.findUnique({
-                where:{id:decoded.userId},
-            });
-            return {username:userdata?.name, id:userdata?.id, email:userdata?.email};
-        }
-        throw new Error('Token unavaliable');
+        return {user: session.user};
     } catch (error) {
         console.error(error);
     }
 });
+
+function checkPublicUrl(event:any): boolean{
+    const publicUrl = ['/api/auth/login', '/api/auth/user', '/login', '/account'];
+    const isPublic = publicUrl.some(url => event.path.includes(url));
+    if(isPublic) return true;
+    return false;
+};
