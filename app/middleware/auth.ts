@@ -3,7 +3,7 @@ import { authClient } from "~/lib/authClient";
 export default defineNuxtRouteMiddleware(async (to)=>{
     if(import.meta.client){
         if(checkPublicUrl(to)) return;
-        const {data: session} = await authClient.useSession(useFetch);
+        const {data: session} = await authClient.useSession(useAuthSession);
         console.log("Session in middleware:", session.value);
         if(!session.value) {
             return navigateTo('/login');
