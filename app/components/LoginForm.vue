@@ -68,8 +68,6 @@
 <script setup>
     import { authClient } from '~/lib/authClient';
 
-    const {data: session, isPending, error: sessionError} = authClient.useSession(useFetch);
-
     const email = ref('');
     const password = ref('');
     const rememberMe = ref(false);

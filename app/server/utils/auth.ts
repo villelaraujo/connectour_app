@@ -12,5 +12,12 @@ export const auth = betterAuth({
         minPasswordLength:6,
         requireEmailVerification:false,
     },
+    advanced:{
+        defaultCookieAttributes:{
+            sameSite:'none',
+            secure: true,
+            httpOnly: true,
+        }
+    }
     
 });

@@ -1,13 +1,17 @@
 import {auth} from "../utils/auth";
+import { fetchUserSession } from "../utils/session";
 
 export default defineEventHandler(async (event)=>{
     try {
         if(checkPublicUrl(event)) return;
         const session = await auth.api.getSession({headers: event.headers});
+        console.log('session endpoint | session data:', session);
         if(!session?.user){
-            throw createError({statusCode:401, message:"Unauthorized"});
+            throw createError({statusCode:401, message:"Unauthorized: user not found in session"});
         }
+        console.log('userdata endpoint | user found', session.user);
         return {user: session.user};
+
     } catch (error) {
         console.error(error);
     }
