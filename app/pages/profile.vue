@@ -79,7 +79,7 @@
     const {data:session} = await authClient.useSession(useAuthFetch);
 
     onMounted(async()=>{
-        await fetchUserdata();
+        
     });
 
     function toggleEditNameMode(){

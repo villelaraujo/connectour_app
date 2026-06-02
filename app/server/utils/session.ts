@@ -11,3 +11,14 @@ export async function fetchUserSession(event:any){
         console.error(error);
     }
 };
+
+export async function getUserInDB(event:any): Promise<any> {
+    const session = await fetchUserSession(event);
+    const userInDB = await prisma.user.findUnique({
+        where:{id: session?.user.id}
+    });
+    if(!userInDB){
+        throw createError({statusCode:401, message:"Unauthorized: user not found in database"});
+    }
+    return userInDB;
+};
