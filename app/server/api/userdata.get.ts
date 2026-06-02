@@ -1,5 +1,4 @@
 import {auth} from "../utils/auth";
-import { fetchUserSession } from "../utils/session";
 
 export default defineEventHandler(async (event)=>{
     try {
