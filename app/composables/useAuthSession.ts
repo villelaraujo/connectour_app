@@ -1,6 +1,6 @@
 import { authClient } from "~/lib/authClient";
 
-export default function useAuthSession(url:string, options?: any){
+export default function useAuthFetch(url:string, options?: any){
     const client = authClient;
     try {
         if(url.startsWith('http')) url = new URL(url).pathname;

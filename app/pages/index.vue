@@ -49,7 +49,7 @@
     });
     definePageMeta({middleware:''});
     
-    const {data:session} = await authClient.useSession(useAuthSession);
+    const {data:session} = await authClient.useSession(useAuthFetch);
 
     const route = useRoute();
 
