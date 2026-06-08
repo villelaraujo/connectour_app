@@ -8,7 +8,7 @@ export default defineEventHandler(async (event)=>{
         }
         const body = await readBody(event);
         if(body.name){
-            const logbooks = await prisma.logbook.create({
+            await prisma.logbook.create({
                 data:{
                     name:body.name,
                     userId:body.userId
