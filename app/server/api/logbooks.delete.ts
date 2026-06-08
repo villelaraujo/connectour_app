@@ -9,12 +9,10 @@ export default defineEventHandler(async (event)=>{
         }
         const body:any|undefined = await readBody(event);
         if(body.logbookId){
-            await prisma.log.deleteMany({
-                where:{logbookId:parseInt(body.logbookId)}
-            })
             await prisma.logbook.delete({
                 where:{
                     id:parseInt(body.logbookId),
+                    userId:user?.id,
                 }
             })
             return {message:'success'};
