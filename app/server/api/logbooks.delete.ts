@@ -1,16 +1,13 @@
 import jwt from 'jsonwebtoken';
+import { getUserInDB } from '../utils/session';
 
 export default defineEventHandler(async (event)=>{
     try {
+        const user:any = await getUserInDB(event);
+        if(!user){
+            throw createError({statusCode:401, message:"Unauthorized on logbooks endpoint"});
+        }
         const body:any|undefined = await readBody(event);
-        const token = getCookie(event,'auth_token');
-        if(!token){
-            throw new Error('Unauthorized');
-        }
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
-        if(!decoded){
-            throw new Error('Unauthorized');
-        }
         if(body.logbookId){
             await prisma.log.deleteMany({
                 where:{logbookId:parseInt(body.logbookId)}

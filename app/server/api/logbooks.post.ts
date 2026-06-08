@@ -1,5 +1,11 @@
+import { getUserInDB } from "../utils/session";
+
 export default defineEventHandler(async (event)=>{
     try {
+        const user:any = await getUserInDB(event);
+        if(!user){
+            throw createError({statusCode:401, message:"Unauthorized on logbooks endpoint"});
+        }
         const body = await readBody(event);
         if(body.name){
             const logbooks = await prisma.logbook.create({
