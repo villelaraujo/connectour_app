@@ -11,7 +11,7 @@ export default defineEventHandler(async (event)=>{
             await prisma.logbook.create({
                 data:{
                     name:body.name,
-                    userId:body.userId
+                    userId:user?.id,
                 },
             });
             return {message:'success'};

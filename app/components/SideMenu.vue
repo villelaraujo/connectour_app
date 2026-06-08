@@ -66,7 +66,6 @@
                 method:'POST',
                 body:{
                     name:logbookName,
-                    userId:providedId.value
                 },
             });
             if(response?.message === 'success'){
