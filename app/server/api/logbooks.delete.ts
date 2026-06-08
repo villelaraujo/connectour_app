@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { getUserInDB } from '../utils/session';
 
 export default defineEventHandler(async (event)=>{
