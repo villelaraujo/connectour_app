@@ -7,6 +7,7 @@
 <script setup>
     definePageMeta({
         layout: 'pre-auth',
+        middleware: 'autologin',
     });
 
     useHead({
