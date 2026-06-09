@@ -10,7 +10,6 @@ export default defineNuxtRouteMiddleware(async (to)=>{
 });
 
 function checkPublicUrl(event:any): boolean{
-    console.log(event.path);
     const publicUrl = ['/api/auth/login', '/api/auth/user', '/login', '/account'];
     const isPublic = publicUrl.some(url => event.path.includes(url));
     if(isPublic) return true;

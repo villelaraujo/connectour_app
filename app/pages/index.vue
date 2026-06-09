@@ -47,7 +47,6 @@
     useHead({
         title: 'Connectour',
     });
-    definePageMeta({middleware:''});
     
     const {data:session} = await authClient.useSession(useAuthFetch);
 
@@ -64,7 +63,6 @@
 
     onMounted(async()=>{
         try {
-            console.log('Component mounted, session:', session.value);
             await updateLogs();
             return;
         } catch (error) {
@@ -77,16 +75,16 @@
     };
     async function updateLogs() {
         if(!route.query.logbook) return;
-        const {data} = await useFetch('/api/logs',{query:{logbook:route.query.logbook}});
+        const data = await $fetch('/api/logs',{query:{logbook:route.query.logbook}});
         if(data){
-            logs.value = data.value;
+            logs.value = data;
             return;
         }
         return;
-    }
+    };
     async function onAddLog(createdLog){
         try {
-            const {data} = await useLazyFetch('/api/logs',{
+            const data = await $fetch('/api/logs',{
                 method:'POST',
                 body:{
                     logbookId:route.query.logbook,
@@ -108,7 +106,7 @@
     };
     async function onDeleteLog(deletedLogId){
         try {
-            const {data} = await useLazyFetch('/api/logs',{
+            const data = await $fetch('/api/logs',{
                 method:'DELETE',
                 body:{
                     logbookId:route.query.logbook,
@@ -126,7 +124,7 @@
     async function onTogglePin(logId,isPinned){
         try {
             isPinned = !isPinned;
-            const {data} = await useLazyFetch('/api/logs',{
+            const data = await $fetch('/api/logs',{
                 method:'PUT',
                 body:{
                     logbookId:route.query.logbook,
@@ -145,7 +143,7 @@
     };
     async function onEditLog(logId,Message) {
         try {
-            const {data} = await useLazyFetch('/api/logs', {
+            const data = await $fetch('/api/logs', {
                 method: 'PUT',
                 body: {
                     logbookId:route.query.logbook,
@@ -161,5 +159,5 @@
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 </script>

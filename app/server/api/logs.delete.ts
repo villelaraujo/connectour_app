@@ -1,14 +1,10 @@
-import jwt from 'jsonwebtoken';
+import { getUserInDB } from "#imports";
 
 export default defineEventHandler(async (event)=>{
     try {
         const body:any|undefined = await readBody(event);
-        const token = getCookie(event,'auth_token');
-        if(!token){
-            throw new Error('Unauthorized');
-        }
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
-        if(!decoded){
+        const user = await getUserInDB(event);
+        if(!user){
             throw new Error('Unauthorized');
         }
         if(body.logId){

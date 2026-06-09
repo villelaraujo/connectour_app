@@ -8,7 +8,6 @@ export default defineEventHandler(async (event)=>{
         if(!user){
             throw createError({statusCode:401, message:"Unauthorized on logs endpoint"});
         }
-        console.log('logs endpoint | user found', user);
         if(params.logbook){
             const logs = await prisma.log.findMany({
                 where:{
