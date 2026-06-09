@@ -47,8 +47,6 @@
     const newLogbookName = ref('');
     const showAddLogbook = ref(false);
 
-    let providedId = inject('providedId');
-
     const router = useRouter();
 
     onMounted(async ()=>{

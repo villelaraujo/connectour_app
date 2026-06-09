@@ -53,7 +53,6 @@
 
     const route = useRoute();
 
-    const providedId = ref(null);
     const logs = ref([]);
     const pinnedLogs = computed(()=>logs.value.filter(log=>log.pinned));
     const createLogMode = ref(false);
@@ -63,7 +62,6 @@
         await updateLogs();
     });
 
-    provide('providedId', providedId);
     onMounted(async()=>{
         try {
             console.log('Component mounted, session:', session.value);
