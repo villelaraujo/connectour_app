@@ -33,15 +33,15 @@
 </template>
 
 <script setup>
+    import { authClient } from '~/lib/authClient';
+
     const menuOpen = ref(false);
+
+    const router = useRouter();
 
     async function logout(){
         try {
-            const response = await $fetch('/api/logout');
-            if(response?.message==='success'){
-                navigateTo('/login');
-                return;
-            }            
+            await authClient.signOut({fetchOptions:{onSuccess:async()=>{router.push('/login');}}});          
         } catch (error) {
             console.error(error);
         }

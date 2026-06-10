@@ -1,17 +1,15 @@
-import jwt from 'jsonwebtoken';
+import { getUserInDB } from "#imports";
+import {auth} from "../utils/auth";
 
 export default defineEventHandler(async (event)=>{
     try {
-        const token = getCookie(event,'auth_token');
-        if(!token){
+        const user = await getUserInDB(event);
+        if(!user){
             throw new Error('Unauthorized');
         }
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
-        if(!decoded){
-            throw new Error('Unauthorized');
-        }
-        deleteCookie(event,'auth_token');
-        return {message:'success'};
+        const result = await auth.api.signOut({headers: event.headers});
+        if(result.success) return {message:'success'};
+        return {message:'failed'};
     } catch (error) {
         console.error(error);
     }
