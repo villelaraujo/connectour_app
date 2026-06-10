@@ -41,7 +41,7 @@
 
     async function logout(){
         try {
-            await authClient.signOut({fetchOptions:{onSuccess:async()=>{router.push('/login');}}});          
+            await authClient.signOut({fetchOptions:{onSuccess:async()=>{window.location.href = "/login";}}});          
         } catch (error) {
             console.error(error);
         }
