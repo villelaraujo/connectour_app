@@ -19,21 +19,24 @@
             <div class="flex flex-col gap-3 md:flex-row">
                 <SideMenu />
                 <div class="flex flex-2 flex-col gap-4">
-                    <div v-if="pinnedLogs.length>0" class="flex-2 flex flex-col gap-4">
-                        <div v-for="log in pinnedLogs">
-                            <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
-                            :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                    <span v-if="loadingLogs" class="loader self-center"></span>
+                    <div v-else>
+                        <div v-if="pinnedLogs.length>0" class="flex-2 flex flex-col gap-4">
+                            <div v-for="log in pinnedLogs">
+                                <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
+                                :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                            </div>
+                            <div class="w-full h-px bg-neutral-700 my-8"></div>
                         </div>
-                        <div class="w-full h-px bg-neutral-700 my-8"></div>
-                    </div>
-                    <div v-if="logs.length>0" class="flex flex-col gap-4">
-                        <div v-for="log in logs">
-                            <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
-                            :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                        <div v-if="logs.length>0" class="flex flex-col gap-4">
+                            <div v-for="log in logs">
+                                <LogCard @edit-log="onEditLog" @delete-log="onDeleteLog" @toggle-pin="onTogglePin" :key="log.logbookId" :id="log.id" :logbook-id="log.logbookId" :log="log.log"
+                                :city="log.city" :country="log.country" :date="log.date" :pinned="log.pinned" :title="log.title"/>
+                            </div>
                         </div>
-                    </div>
-                    <div v-else class="flex flex-2 items-center justify-center min-h-32">
-                        <p class="cursor-default select-none text-neutral-600">This LogBook is empty</p>
+                        <div v-else class="flex flex-2 items-center justify-center min-h-32">
+                            <p class="cursor-default select-none text-neutral-600">This LogBook is empty</p>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -55,6 +58,7 @@
     const logs = ref([]);
     const pinnedLogs = computed(()=>logs.value.filter(log=>log.pinned));
     const createLogMode = ref(false);
+    const loadingLogs = ref(true);
 
     watch(()=>route.query.logbook, async(newId)=>{
         console.log('logbookId changed', newId);
@@ -75,9 +79,11 @@
     };
     async function updateLogs() {
         if(!route.query.logbook) return;
+        loadingLogs.value = true;
         const data = await $fetch('/api/logs',{query:{logbook:route.query.logbook}});
         if(data){
             logs.value = data;
+            loadingLogs.value = false;
             return;
         }
         return;
