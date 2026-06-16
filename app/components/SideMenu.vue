@@ -93,6 +93,7 @@
                     loadingLogbooks.value = false;
                     return;
                 }
+                loadingLogbooks.value = false;
                 return;
             }
         } catch (error) {
